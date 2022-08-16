@@ -1,0 +1,80 @@
+---
+title: "Using Public Data and Maps for Powerful Data Visualizations"
+author: "Joy Payton"
+format: revealjs
+editor: visual
+---
+
+## About This Session
+
+-   Section 1: Census data
+-   Break / Q&A
+-   Section 2: Public data portals
+-   Break / Q&A
+-   Section 3: Mapping data using leaflet
+-   Q&A / Next Steps
+
+## About Your Instructor
+
+Joy Payton
+
+-   Data Educator
+-   Census Nerd
+-   Map Fan
+
+## Section 1: Census Data
+
+When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+## Section 2: Public Data Portals
+
+## Section 3: Mapping With Leaflet
+
+In this section, we're going to talk about several topics:
+
+* Maps as a data visualization idiom
+* Choropleths
+
+## Map as Idiom: Example 1
+
+What do you see in this reconstruction of a 12th century data visualization?
+
+![al-Idrisi's Tabula Rogeriana (Kitab Rujjar)](media/map.jpeg)
+
+## Map as Idiom: Example 2
+
+![modern map of Okinawa](media/1954_map.jpeg)
+## Elements of Maps
+
++--------------+----------------------------------+--------------------------+-------------+
+| Shapes       | Colors                           | Sizes                    | Language    |
++==============+==================================+==========================+=============+
+| -   Points   | -   Hue (water is blue)          | -   Thick / thin lines   | -   Scales  |
+|              |                                  |                          |             |
+| -   Lines    | -   Intensity (e.g. water depth) | -   Large / small points | -   Numbers |
+|              |                                  |                          |             |
+| -   Polygons |                                  | -   Solid / broken lines | -   Words   |
++--------------+----------------------------------+--------------------------+-------------+
+
+## Map Files
+
+*   GeoJSON (IETF Standard)  https://tools.ietf.org/html/rfc7946  (usually one file)
+*   Shapefile (ESRI standard) https://www.esri.com/library/whitepapers/pdfs/shapefile.pdf  (usually multiple files in a .zip)
+
+Along with many folks (see, e.g. http://switchfromshapefile.org/) , I believe that geoJSON is a better format than Shapefile, but this is mostly due to the fact that JSON itself is so well-understood and easy to work with, so it’s a simpler jump for me.  Your needs may be different!
+
+There are others with smaller market share:
+
+*   [OGC GeoPackage](http://switchfromshapefile.org/#geopackage)
+*   [OGC GML](http://switchfromshapefile.org/#gml)
+*   [SpatiaLite](http://switchfromshapefile.org/#spatialite)
+*   [OGC KML](http://switchfromshapefile.org/#kml)
+
+## Working With Map Files
+
+Let’s just start working with some map files to see what they look like under the hood.  
+All of my files can be found at https://github.com/pm0kjp/mapping-geographic-data-in-r or https://rstudio.cloud/project/334226  (YMMV)
