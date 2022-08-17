@@ -1,0 +1,7 @@
+*.Rproj
+.DS_Store
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+RMedicine2022_files

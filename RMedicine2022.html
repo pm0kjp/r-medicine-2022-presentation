@@ -323,8 +323,9 @@
   <p class="author">Joy Payton</p>
 </section>
 
-<section id="about-this-session" class="slide level2">
+<section id="about-this-session" class="slide level2 smaller">
 <h2>About This Session</h2>
+<p>Please follow along… I include links here you’ll want to click!</p>
 <ul>
 <li>Section 1: Census data</li>
 <li>Break / Q&amp;A</li>
@@ -334,26 +335,325 @@
 <li>Q&amp;A / Next Steps</li>
 </ul>
 </section>
-<section id="about-your-instructor" class="slide level2">
+<section id="about-your-instructor" class="slide level2 smaller">
 <h2>About Your Instructor</h2>
-<p>Joy Payton</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>Joy Payton (she/her) is…</p>
 <ul>
-<li>Data Educator</li>
-<li>Census Nerd</li>
+<li>Data Scientist</li>
+<li>Data Educator (so I know a little about a lot)</li>
+<li>Research Reproducibility Advocate</li>
+<li>Census Nerd (first job after undergrad!)</li>
 <li>Map Fan</li>
+<li>Political Junkie</li>
 </ul>
+</div><div class="column" style="width:40%;">
+<p><img data-src="media/joy_payton.jpg"></p>
+</div>
+</div>
+</section>
+<section id="about-your-instructor-1" class="slide level2 smaller">
+<h2>About Your Instructor</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>Joy Payton (she/her) is NOT …</p>
+<ul>
+<li>GIS Wizard</li>
+<li>Demographer</li>
+<li>Physician</li>
+<li>Statistician</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<p><img data-src="media/joy_payton.jpg"></p>
+</div>
+</div>
+</section>
+<section id="you-can-reach-me" class="slide level2 smaller">
+<h2>You Can Reach Me…</h2>
+<ul>
+<li>On LinkedIn (https://www.linkedin.com/in/joypayton/)</li>
+<li>By making an issue on the repo for this presentation (https://github.com/pm0kjp/r-medicine-2022/issues)</li>
+<li>By using my CHOP email address which is paytonk [at] CHOP [dot] edu</li>
+</ul>
+</section>
+<section id="practical-section-1" class="slide level2 smaller">
+<h2>Practical Section 1</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>First, let’s start by having you clone the materials for the workshop to your own computer.</p>
+<ul>
+<li>Go to <a href="https://github.com/pm0kjp/r-medicine-2022/" class="uri">https://github.com/pm0kjp/r-medicine-2022/</a> and click on the green “Code” button to either:</li>
+<li>Clone the repository (if you already use git, you know how this works) or</li>
+<li>Download the zipped contents (if you’re not a git user)</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<p><img data-src="media/github_code_button.png"></p>
+</div>
+</div>
+</section>
+<section id="practical-section-1-1" class="slide level2 smaller">
+<h2>Practical Section 1</h2>
+<p>Once you have these files downloaded, you will notice the following file structure:</p>
+<pre><code>./
+├── 📁 data
+├── 📁 scripts
+├── .gitattributes
+├── .gitignore
+└── README.md</code></pre>
+<p>Please <strong>add</strong> a folder called <code>private</code> at the same level as <code>data</code> and <code>scripts</code>, so that it looks like this:</p>
+<pre><code>./
+├── 📁 data
+├── 📁 private
+├── 📁 scripts
+├── .gitattributes
+├── .gitignore
+└── README.md</code></pre>
 </section>
 <section id="section-1-census-data" class="slide level2">
 <h2>Section 1: Census Data</h2>
-<p>When you click the <strong>Render</strong> button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
-</div>
-</div>
+
+<img data-src="media/census_website.gif" class="r-stretch"></section>
+<section id="decennial-census" class="slide level2 smaller">
+<h2>Decennial Census</h2>
+<p>The US Census Bureau is bound by the Constitution to do a <strong>full</strong> (not sampled) census of all people within the US every ten years. This determines the number of seats in the US House of Representatives and are used to draw district boundaries. This is the <em>Decennial Census</em>.</p>
 </section>
-<section id="section-2-public-data-portals" class="slide level2">
+<section id="american-community-survey" class="slide level2 smaller">
+<h2>American Community Survey</h2>
+<p>In addition to the full population census, the Census Bureau is also responsible for conducting the <em>American Community Survey</em> (ACS) which uses sampling and inferential statistics to make estimates of social factors that affect your patients and research subjects… neighborhood characteristics like:</p>
+<ul>
+<li>Education levels, demographic characteristics</li>
+<li>Poverty rates, mean and median income</li>
+<li>Computer usage, housing characteristics</li>
+<li>Crime, commuting, and much more!</li>
+</ul>
+</section>
+<section id="versions-of-the-acs" class="slide level2 smaller">
+<h2>Versions of the ACS</h2>
+<p>Note that the ACS also has one and five year versions. Five year ACS data includes estimates for the entire country, while one year versions concentrate on population-dense areas and have smaller sample sizes.</p>
+<p>This means that if you’re doing analysis on, say, NYC, you can get very up-to-date (but less reliable) 1-year estimates, but if you’re interested in studying Iowa, or getting NYC estimates with a smaller margin of error, you’d be better off with a somewhat less current but broader and more reliable 5 year ACS. That’s what we’ll use today – five year ACS estimates.</p>
+</section>
+<section id="other-census-work" class="slide level2 smaller">
+<h2>Other Census Work</h2>
+<p>There are additional censuses performed by the Census Bureau that we won’t talk about, such as an <em>Economic Census</em> done every five years and the <em>Census of Governments</em> done every five years.</p>
+</section>
+<section id="geographies" class="slide level2 smaller">
+<h2>Geographies</h2>
+<p>Census data is collected at and aggregated to various levels:</p>
+<ul>
+<li>The country as a whole</li>
+<li>States / territories</li>
+<li>Counties</li>
+<li>ZIP Code Tabulation Areas (approximations of ZIP Codes)</li>
+<li>Urban areas</li>
+<li>Census Tracts (1-8k people)</li>
+<li>Census Block Groups</li>
+<li>Census Blocks (600 - 3k people)</li>
+<li>and probably more I’ve forgotten about!</li>
+</ul>
+</section>
+<section id="census-website" class="slide level2 smaller">
+<h2>Census Website</h2>
+<p>The website of the Census Bureau (<a href="https://www.census.gov" class="uri">https://www.census.gov</a>) is a veritable treasure trove of information about what’s available and how to use Census data.</p>
+<p>You can obtain data and download it in the Census Data browser at <a href="https://data.census.gov/" class="uri">https://data.census.gov/</a>. The tables you will find here are optimized for <strong>human readability</strong>, not always for processing via script. But using these tables can give you an idea of what kind of data is available, the short name / encoding for variables, and give you access to notes about your data.</p>
+</section>
+<section id="practical-section-2" class="slide level2 smaller">
+<h2>Practical Section 2</h2>
+<p>Let’s take a look at these two websites. Delve in to what’s available. How would this data be useful for you in your clinical practice or research?</p>
+<ul>
+<li><a href="https://www.census.gov" class="uri">https://www.census.gov</a></li>
+<li><a href="https://data.census.gov/" class="uri">https://data.census.gov/</a></li>
+</ul>
+</section>
+<section id="what-is-an-api" class="slide level2 smaller">
+<h2>What is an API?</h2>
+<p><strong><em>API</em></strong> stands for <strong><em>Application Programming Interface</em></strong>. It’s a way for people or computers to interact with software in a prescribed way. A common type of Web API is based on the REST architecture and are often referred to as “RESTful APIs”.</p>
+<p>A RESTful API promotes a “resource-oriented” API where URLs map to objects or resources that you can then interact with. It’s a simple request / response system that can be as simple or complex as needed. Some APIs will also allow a client to send data as well, for instance, to add to a database.</p>
+</section>
+<section id="api-overview" class="slide level2 smaller">
+<h2>API Overview</h2>
+<p>Plan to work with Census Bureau data over and over again? It’s worth the time to use APIs instead of downloading data from the website manually.</p>
+<p>This is what the <a href="https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_api_handbook_2020_ch02.pdf">Census Bureau says</a> about API usage:</p>
+<blockquote>
+<p>Any user may query small quantities of data with minimal restrictions (up to 50 variables in a single query, and up to 500 queries per IP address per day). However, more than 500 queries per IP address per day requires that you register for an API key.</p>
+</blockquote>
+</section>
+<section id="getting-an-api-key" class="slide level2 smaller">
+<h2>Getting an API Key</h2>
+<p>From the <a href="https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_api_handbook_2020_ch02.pdf">same source</a>:</p>
+<blockquote>
+<p>Once you have an API key, you can extract information from Census Bureau data sets using a variety of tools including JSON, R, Python, or even by typing a query string into the URL of a Web browser.</p>
+</blockquote>
+</section>
+<section id="practical-section-3" class="slide level2 smaller">
+<h2>Practical Section 3</h2>
+<p>The Census Bureau offers <strong>free</strong> API credentials at <a href="https://api.census.gov/data/key_signup.html" class="uri">https://api.census.gov/data/key_signup.html</a></p>
+<p><strong>Do that now.</strong></p>
+<p><strong>We’ll wait.</strong></p>
+<p>No, really, do that now, that way you can work on the practical sections!</p>
+</section>
+<section id="api-endpoints" class="slide level2 smaller">
+<h2>API Endpoints</h2>
+<p>Check out their <a href="https://www.census.gov/data/developers/data-sets.html">list of API endpoints</a>.</p>
+<p><a href="https://cran.r-project.org/package=tidycensus"><code>tidycensus</code></a> is a package that helps you work with specific APIs offered by the Census Bureau.</p>
+</section>
+<section id="documentation" class="slide level2 smaller">
+<h2>Documentation</h2>
+<p>Great documentation in the <a href="https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_api_handbook_2020.pdf">ACS API Handbook</a></p>
+
+<img data-src="media/api_documentation.png" class="r-stretch"></section>
+<section id="fips" class="slide level2 smaller">
+<h2>FIPS</h2>
+<p>“FIPS” stands for “Federal Information Processing Standards” but often, when you talk to people, they’ll apply the term to whatever their particular federal data is… so, e.g., instead of “Census tract identifier” they’ll say “the FIPS”. It’s a term that therefore ends up having lots of meanings.</p>
+<p>There are FIPS codes for states, counties, tracts, and blocks, and when concatenated, they end up being a single geographic id. Tracts and blocks can and will change from census to census!</p>
+</section>
+<section id="fips-example" class="slide level2 smaller">
+<h2>FIPS Example</h2>
+<p>For example, the state code for Pennsylvania is 42, the county code for Philadelphia is 101, and the census tract within Philadelphia where the University City campus of the Children’s Hospital of Philadelphia stands is 036901 (the last two digits can be thought of as ‘after the decimal point’, so this has a “human” name of Census Tract 369.01). Further, the block group is 4, and the full block number is 4002, so you might be using a “GEOID” of 421010369014002 (if the block is included), or just 42101036901 (if you have tract level data only).</p>
+</section>
+<section id="granularity-of-data" class="slide level2 smaller">
+<h2>Granularity of Data</h2>
+<p>Census data is very very specific. If, for example, you’re interested in income data for a given tract, you might find columns that include descriptions like:</p>
+<ul>
+<li>INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Total households - Less than $10,000</li>
+<li>INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Total households - $10,000 to $14,999</li>
+<li>INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Total households - $15,000 to $24,999</li>
+<li>INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Total households - $25,000 to $34,999</li>
+<li>… and so on ..</li>
+</ul>
+</section>
+<section id="granularity-of-data-1" class="slide level2 smaller">
+<h2>Granularity of Data</h2>
+<p>Or:</p>
+<ul>
+<li>INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Families - Less than $10,000</li>
+<li>INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Families - $10,000 to $14,999</li>
+<li>… and so on …</li>
+</ul>
+</section>
+<section id="granularity-of-data-2" class="slide level2 smaller">
+<h2>Granularity of Data</h2>
+<p>Or:</p>
+<ul>
+<li>INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - With Supplemental Security Income - Mean Supplemental Security Income (dollars)</li>
+<li>INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - With cash public assistance income - Mean cash public assistance income (dollars)</li>
+<li>… and so on…</li>
+</ul>
+</section>
+<section id="granularity-of-data-3" class="slide level2 smaller">
+<h2>Granularity of Data</h2>
+<p>Or:</p>
+<ul>
+<li>INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Median earnings for workers (dollars)</li>
+<li>INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Median earnings for male full-time, year-round workers (dollars)</li>
+<li>INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Median earnings for female full-time, year-round workers (dollars)</li>
+</ul>
+</section>
+<section id="granularity-of-data-4" class="slide level2 smaller">
+<h2>Granularity of Data</h2>
+<p>You will likely need to do a bit of honing your question: families only, or all households (say, a single person, or a group home)? Do you want to look at statistics across the board or specify race, sex, or hispanicity? What is considered income, and what benefits? Do you want to include SSI? Measure it separately? What about welfare?</p>
+</section>
+<section id="estimates-and-moes" class="slide level2 smaller">
+<h2>Estimates and MOEs</h2>
+<p>You’ll also find, for any given measure, a few variables related to it:</p>
+<ul>
+<li>Estimate – used when a scalar count or value is needed, like median income or number of white women</li>
+<li>Margin of error – used to indicate the precision of the estimate</li>
+<li>Percent – used when a percent is needed, like percent of families below the poverty line</li>
+<li>Percent Margin of Error – used to indicate the precision of the percent estimate</li>
+</ul>
+<p>Note that all four columns are generally present although only two make sense for any given measure!</p>
+</section>
+<section id="sparsity" class="slide level2 smaller">
+<h2>Sparsity</h2>
+<p>Every area of the US belongs to a census tract, even if it’s an area in which people don’t normally live (like a park or lake or airport). That’s why you might see census tracts with little to no data. Don’t panic if you see that a few tracts have very sparse data – they may be one of these special tracts.</p>
+</section>
+<section id="practical-section-4" class="slide level2 smaller">
+<h2>Practical Section 4</h2>
+<p>Time to play with data! But first, check your email, then go to the materials for this course, the stuff you downloaded from the repository.</p>
+<ul>
+<li>Find the email with your Census API key</li>
+<li>Add that to a new text file (you can make a new text file in RStudio or any text editor)</li>
+<li>Save it in the <code>/private</code> directory you created earlier, as <code>census_api_key.txt</code></li>
+</ul>
+</section>
+<section id="practical-section-4-1" class="slide level2 smaller">
+<h2>Practical Section 4</h2>
+<p>Now that you’ve stored your API key…</p>
+<p>Go to the materials for this course, the stuff you downloaded from the repository. Look inside <code>/scripts</code> and open <code>census_data.Rmd</code>.</p>
+<p>(Feeling fancy? It might be a good idea to start a Project using the top level directory as the location…)</p>
+</section>
+<section id="practical-section-4-2" class="slide level2 smaller">
+<h2>Practical Section 4</h2>
+<p>You probably have to install some things. RStudio may have already alerted you to this. Alternatively, uncomment and run line 15 of <code>census_data.Rmd</code>. You can skip most of the verbiage in the next few sections, it’s the stuff I’ve already explained.</p>
+<p>Scroll all the way down to the chunk titled “key_setting” around line 140, where we’ll pick up your census key. You <strong>did</strong> save it, right? Then, run the blocks one at a time, pausing to note what each one does and how you might choose something different as an example. Experiment some! This will lead into our Break / Q&amp;A time, so govern your time as you see fit.</p>
+</section>
+<section id="section-2-public-data-portals" class="slide level2 smaller">
 <h2>Section 2: Public Data Portals</h2>
+<p>In this section we’ll delve a bit more into what APIs are and why to use them, and give you some tips for navigating public data portals.</p>
+<p>Not <strong>all</strong> public data of interest is located in well-organized portals – you may need to scrape an HTML table from a webpage or download a fixed-width file from an FTP server, but today we’re going to stick to these use cases.</p>
+</section>
+<section id="why-use-an-api" class="slide level2 smaller">
+<h2>Why Use an API?</h2>
+<p>Why use APIs? They provide a structured, consistent way to carry out a process so that it can be automated and standardized. An API provides consistency around a process.</p>
+<p>Imagine two different people doing the exact same data download task using a manual approach. They will most definitely have a different process for doing the task and likely a different result as well.</p>
+<p>An API defines and requires a specific structure for input and provides a specific structure for the output.</p>
+</section>
+<section id="api-use-cases" class="slide level2 smaller">
+<h2>API Use Cases</h2>
+<p>Specific API use cases might include:</p>
+<ul>
+<li>Getting the latest, most up-to-date data for an application that counts hospital admissions for influenza</li>
+<li>Requesting, on a news site, only news stories related to public health in Ghana</li>
+<li>Communicating between code, such as sending success messages or heartbeats</li>
+</ul>
+<p>In all of these cases, you want to get predictable results using a method that’s easy to reproduce. Let’s concentrate for now on the use case of getting fresh data via an API.</p>
+</section>
+<section id="apis-mean-fresh-data" class="slide level2 smaller">
+<h2>APIs Mean Fresh Data!</h2>
+<p>While many data-centric applications allow you to download data by using a form submission and then save it to your computer, that might not be the most useful way to work with data in an ongoing way.</p>
+<p>If your data might change regularly, with more data being added, it’s probably smart to add a few lines to your code that get the latest data, instead of depending on a potentially stale CSV in a folder on your computer.</p>
+</section>
+<section id="the-alternative-is-awful" class="slide level2 smaller">
+<h2>The Alternative… is Awful</h2>
+<p>It’s also easier to make a reproducible script that with the push of a button runs and does everything from obtaining data to analyzing it and creating data visualizations, instead of relying on an error-prone, human-executed punch list of instructions with manual steps like:</p>
+<ul>
+<li>Go to https://fake.site/data .</li>
+<li>Log in using the username:mike and password:mypassword</li>
+<li>Make sure you’ve checked the following boxes in the data request page: …</li>
+<li>Save the file with the following naming convention: …</li>
+<li>Store the file in the sharefile folder within the directory called …</li>
+<li>And so on …</li>
+</ul>
+</section>
+<section id="socrata-api" class="slide level2 smaller">
+<h2>Socrata API</h2>
+<p>Because the Socrata Open Data API (SODA) is consistent across the many public data sources that employ it, we can learn some of the basic use cases once and be well-equipped to use the same methods in multiple places.</p>
+<p>The Socrata Open Data API (SODA) uses URL query strings (also known as URL queries or URL parameters) to pass the data provider some details about what data you want.</p>
+<p><strong>Aside: Why is this API called “open”? Because it allows any user to download data without login credentials – it’s, well, open!</strong></p>
+</section>
+<section id="url-queries" class="slide level2">
+<h2>URL Queries</h2>
+<p>Consider this URL: https://www.amazon.com/s?k=r+for+data+science&amp;crid=1CZ68952YCOJU&amp;sprefix=r+for+data+sci%2Caps%2C143&amp;ref=nb_sb_ss_i_1_14</p>
+<p>You may have seen long URLs like this one, which have question marks, equals signs, and ampersands. These long query strings generally give specific data – in this case, I’m asking for a specific book title, which I left in lower case: “r for data science”. Let’s take a look at this specific query string:</p>
+<p><code>?k=r+for+data+science&amp;crid=1CZ68952YCOJU&amp;sprefix=r+for+data+sci%2Caps%2C143&amp;ref=nb_sb_ss_i_1_14</code></p>
+</section>
+<section id="query-strings" class="slide level2 smaller">
+<h2>Query Strings</h2>
+<p><code>?k=r+for+data+science&amp;crid=1CZ68952YCOJU&amp;sprefix=r+for+data+sci%2Caps%2C143&amp;ref=nb_sb_ss_i_1_14</code></p>
+<p>These are the keys (variables, named data points) and values we see in the query string:</p>
+<ul>
+<li>“k”, which is equal to “r+for+data+science”</li>
+<li>“crid” (maybe my customer ID?): “1CZ68952YCOJU”</li>
+<li>“sprefix” (seems to reiterate the book title and a few other things): “r+for+data+sci%2Caps%2C143”</li>
+<li>“ref”, which may be some code about my search history or how I got to this page: “nb_sb_ss_i_1_14”</li>
+</ul>
+</section>
+<section id="query-strings-1" class="slide level2 smaller">
+<h2>Query Strings</h2>
+<p><code>?k=r+for+data+science&amp;crid=1CZ68952YCOJU&amp;sprefix=r+for+data+sci%2Caps%2C143&amp;ref=nb_sb_ss_i_1_14</code></p>
+<p>You’ll notice that a query string starts with a <code>?</code> and is followed by key-value pairs with the format “key=value”. There are no spaces allowed, which is why URLs will use things like plus signs or <code>%20</code> to indicate spaces. Between key-value pairs, we add an ampersand (<code>&amp;</code>), and can string together many key-value pairs in this way.</p>
+<p>It’s important to become comfortable with query strings like the one above so that you can effectively construct query strings for your work with the Socrata API.</p>
 </section>
 <section id="section-3-mapping-with-leaflet" class="slide level2">
 <h2>Section 3: Mapping With Leaflet</h2>
@@ -367,11 +667,14 @@
 <h2>Map as Idiom: Example 1</h2>
 <p>What do you see in this reconstruction of a 12th century data visualization?</p>
 
-<img data-src="media/map.jpeg" class="r-stretch quarto-figure-center"><p class="caption">al-Idrisi’s Tabula Rogeriana (Kitab Rujjar)</p></section>
+<img data-src="media/map.jpeg" class="r-stretch quarto-figure-center"><p class="caption">al-Idrisi’s Tabula Rogeriana (Kitab Rujar)</p></section>
 <section id="map-as-idiom-example-2" class="slide level2">
 <h2>Map as Idiom: Example 2</h2>
 
-<img data-src="media/1954_map.jpeg" class="r-stretch quarto-figure-center"><p class="caption">modern map of Okinawa</p><table>
+<img data-src="media/1954_map.jpeg" class="r-stretch quarto-figure-center"><p class="caption">modern map of Okinawa</p></section>
+<section id="elements-of-maps" class="slide level2">
+<h2>Elements of Maps</h2>
+<table>
 <colgroup>
 <col style="width: 16%">
 <col style="width: 38%">
@@ -410,7 +713,29 @@
 </tr>
 </tbody>
 </table>
-<h3 id="map-elements">Map Elements</h3>
+</section>
+<section id="map-files" class="slide level2">
+<h2>Map Files</h2>
+<ul>
+<li>GeoJSON (IETF Standard) https://tools.ietf.org/html/rfc7946 (usually one file)</li>
+<li>Shapefile (ESRI standard) https://www.esri.com/library/whitepapers/pdfs/shapefile.pdf (usually multiple files in a .zip)</li>
+</ul>
+<p>Along with many folks (see, e.g.&nbsp;http://switchfromshapefile.org/) , I believe that geoJSON is a better format than Shapefile, but this is mostly due to the fact that JSON itself is so well-understood and easy to work with, so it’s a simpler jump for me. Your needs may be different!</p>
+</section>
+<section id="but-wait-theres-more" class="slide level2">
+<h2>But Wait, There’s More!</h2>
+<p>There are other geospatial data types with smaller market share:</p>
+<ul>
+<li><a href="http://switchfromshapefile.org/#geopackage">OGC GeoPackage</a></li>
+<li><a href="http://switchfromshapefile.org/#gml">OGC GML</a></li>
+<li><a href="http://switchfromshapefile.org/#spatialite">SpatiaLite</a></li>
+<li><a href="http://switchfromshapefile.org/#kml">OGC KML</a></li>
+</ul>
+</section>
+<section id="working-with-map-files" class="slide level2">
+<h2>Working With Map Files</h2>
+<p>Let’s just start working with some map files to see what they look like under the hood.<br>
+All of my files can be found at https://github.com/pm0kjp/mapping-geographic-data-in-r or https://rstudio.cloud/project/334226 (YMMV)</p>
 <div class="footer footer-default">
 
 </div>
@@ -626,48 +951,6 @@
         ]
       });
     </script>
-    
-    <script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        function fireSlideChanged(previousSlide, currentSlide) {
-
-          // dispatch for htmlwidgets
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
-
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
-          }
-        }
-
-        // hookup for reveal
-        if (window.Reveal) {
-          window.Reveal.addEventListener("slidechanged", function(event) {
-            fireSlideChanged(event.previousSlide, event.currentSlide);
-          });
-        }
-
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
-        }
-
-      })();
-    </script>
-
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
