@@ -3,24 +3,26 @@ title: "Using Public Data and Maps for Powerful Data Visualizations"
 author: "Joy Payton"
 format: 
   revealjs:
-      theme: serif
+      theme: night
 editor: visual
 ---
 
-## About This Session {.smaller}
+# About This Session {.smaller}
 
-Please follow along... I include links here you'll want to click!
-
-The second section is strongly USA-centric, but the rest is globally applicable.
+Please follow along at <https://rpubs.com/pm0kjp/r_medicine_2022>. I include links here you'll want to click!
 
 -   Section 1: APIs
--   Section 2: US Census data
+-   Section 2: Socrata public data portals
 -   Break / Q&A
--   Section 3: Socrata public data portals
--   Section 4: Other public data portals
+-   Section 3: Maps and geospatial data
+-   Section 4: US Census Data
 -   Break / Q&A
--   Section 5: Mapping data using leaflet
+-   Section 5 (if time permits): Non-Socrata public data portals
 -   Q&A / Next Steps
+
+::: {.notes}
+The Census section is strongly USA-centric, but the rest is globally applicable.  
+:::
 
 ## About Your Instructor {.smaller}
 
@@ -64,82 +66,15 @@ Joy Payton (she/her) is NOT ...
 -   By making an issue on the repo for this presentation (<https://github.com/pm0kjp/r-medicine-2022/issues>)
 -   By using my CHOP email address which is paytonk \[at\] CHOP \[dot\] edu
 
-## Section 1: APIs {.smaller}
+# Section 1: APIs {.smaller}
 
 What are APIs and why do they matter?  We'll be talking about the Census API, the SODA API, and other API endpoints in this session, so a short intro to APIs is in order.
 
-## What is an API? {.smaller}
+## First, a Bit of Setup {.smaller}
 
 ::: columns
 ::: {.column width="60%"}
-***API*** stands for ***Application Programming Interface***. It's a way for people or computers to interact with software in a prescribed way. A common type of Web API is based on the REST architecture and are often referred to as "RESTful APIs".
-
-A RESTful API promotes a "resource-oriented" API where URLs (web addresses) map to objects or resources that you can then interact with (like .csvs of data). 
-
-:::
-
-::: {.column width="40%"}
-![](media/nytimes_api.png)
-:::
-:::
-
-
-## Why Use an API? {.smaller}
-
-Why use APIs? They provide a structured, consistent way to carry out a process so that it can be **automated** and **standardized**. An API provides consistency around a process.
-
-::: {.notes}
-Imagine two different people doing the exact same data download task using a manual approach. They will each have a different process for doing the task and likely a different result as well.
-
-An API defines and requires a specific structure for input and provides a specific structure for the output.
-:::
-
-
-## API Use Cases {.smaller}
-
-Specific API use cases might include:
-
--   Getting the latest, most up-to-date data for an application that counts hospital admissions for influenza
--   Requesting, on a news site, only news stories related to public health in Ghana
--   Communicating between code, such as sending success messages or heartbeats
-
-In all of these cases, you want to get predictable results using a method that's easy to reproduce. Let's concentrate for now on the use case of getting fresh data via an API.
-
-## APIs Mean Fresh Data! {.smaller}
-
-::: columns
-::: {.column width="60%"}
-While many data-centric applications allow you to download data by using a form submission or clicking on buttons that save data to your computer, that might not be the most useful way to work with data in an ongoing way.
-
-If your data might change regularly, with more data being added, it's probably smart to add a few lines to your code that get the latest data, instead of depending on a potentially stale CSV in a folder on your computer.
-:::
-
-::: {.column width="40%"}
-![](media/pubmed_api.png)
-:::
-:::
-
-## The Alternative... is Awful {.smaller}
-
--   Go to https://fake.site/data ...
--   Log in using the username:mike and password:mypassword
--   Make sure you've checked the following boxes in the data request page: ...
--   Save the file with the following naming convention: ...
--   Store the file in the sharefile folder within the directory called ...
-
-::: {.notes}
-Using an API makes it easier to make a reproducible script that with the push of a button runs and does everything from obtaining data to analyzing it and creating data visualizations, instead of relying on an error-prone, human-executed punch list of instructions with manual steps like the ones on this slide!  
-:::
-
-## Section 2: US Census Data
-
-![](media/census_website.gif)
-
-## Exercise 1 {.smaller}
-
-::: columns
-::: {.column width="60%"}
-First, let's start by having you clone the materials for the workshop to your own computer.
+First, let's start by having you clone the materials for the workshop to your own computer.  When we start using APIs you'll want this!
 
 -   Go to <https://github.com/pm0kjp/r-medicine-2022/> and click on the green "Code" button to either:
 -   Clone the repository (if you already use git, you know how this works) or
@@ -151,7 +86,7 @@ First, let's start by having you clone the materials for the workshop to your ow
 :::
 :::
 
-## Exercise 1 {.smaller}
+## First, a Bit of Setup {.smaller}
 
 Once you have these files downloaded, you will notice the following file structure:
 
@@ -162,7 +97,7 @@ Once you have these files downloaded, you will notice the following file structu
     ├── .gitignore
     └── README.md
 
-Please **add** a folder called `private` at the same level as `data` and `scripts`, so that it looks like this:
+Please **add** a folder called `private` at the same level as `data` and `scripts`, so that it looks like this.  You'll add API keys, unique to you, to your own `private` directory.
 
     ./
     ├── 📁 data
@@ -172,241 +107,90 @@ Please **add** a folder called `private` at the same level as `data` and `script
     ├── .gitignore
     └── README.md
 
-## Decennial Census {.smaller}
-
-The US Census Bureau is bound by the Constitution to do a **full** (not sampled) census of all people within the US every ten years. This determines the number of seats in the US House of Representatives and are used to draw district boundaries. This is the *Decennial Census*.
-
-## American Community Survey {.smaller}
-
-In addition to the full population census, the Census Bureau is also responsible for conducting the *American Community Survey* (ACS) which uses sampling and inferential statistics to make estimates of social factors that affect your patients and research subjects... neighborhood characteristics like:
-
--   Education levels, demographic characteristics
--   Poverty rates, mean and median income
--   Computer usage, housing characteristics
--   Crime, commuting, and much more!
-
-## Versions of the ACS {.smaller}
-
-Note that the ACS also has one and five year versions. Five year ACS data includes estimates for the entire country, while one year versions concentrate on population-dense areas and have smaller sample sizes.
-
-::: {.notes}
-This means that if you're doing analysis on, say, NYC, you can get very up-to-date (but less reliable) 1-year estimates, but if you're interested in studying Iowa, or getting NYC estimates with a smaller margin of error, you'd be better off with a somewhat less current but broader and more reliable 5 year ACS. That's what we'll use today -- five year ACS estimates.
-:::
-
-
-## Other Census Work {.smaller}
-
-There are additional censuses performed by the Census Bureau that we won't talk about, such as an *Economic Census* done every five years and the *Census of Governments* done every five years.
-
-## Geographies {.smaller}
-
-Census data is collected at and aggregated to various levels:
-
--   The country as a whole
--   States / territories
--   Counties
--   ZIP Code Tabulation Areas (approximations of ZIP Codes)
--   Urban areas
--   Census Tracts (1-8k people)
--   Census Block Groups
--   Census Blocks (600 - 3k people)
--   and probably more I've forgotten about!
-
-## Census Website {.smaller}
-
-The website of the Census Bureau (<https://www.census.gov>) is a veritable treasure trove of information about what's available and how to use Census data.
-
-You can obtain data and download it in the Census Data browser at <https://data.census.gov/>. The tables you will find here are optimized for **human readability**, not always for processing via script.
-
-::: {.notes}
-But using these human-optimized tables can give you an idea of what kind of data is available, the short name / encoding for variables, and give you access to notes about your data.
-:::
-
-## Practical Section 2 {.smaller}
-
-Let's take a look at these two websites. Delve in to what's available. How would this data be useful for you in your clinical practice or research?
-
--   <https://www.census.gov>
--   <https://data.census.gov/>
-
-## API Overview {.smaller}
-
-Plan to work with Census Bureau data over and over again? It's worth the time to use APIs instead of downloading data from the website manually.
-
-This is what the [Census Bureau says](https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_api_handbook_2020_ch02.pdf) about API usage:
-
-> Any user may query small quantities of data with minimal restrictions (up to 50 variables in a single query, and up to 500 queries per IP address per day). However, more than 500 queries per IP address per day requires that you register for an API key.
-
-## Getting an API Key {.smaller}
-
-From the [same source](https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_api_handbook_2020_ch02.pdf):
-
-> Once you have an API key, you can extract information from Census Bureau data sets using a variety of tools including JSON, R, Python, or even by typing a query string into the URL of a Web browser.
-
-## Practical Section 3 {.smaller}
-
-The Census Bureau offers **free** API credentials at <https://api.census.gov/data/key_signup.html>
-
-**Do that now.**
-
-**We'll wait.**
-
-No, really, do that now, that way you can work on the practical sections!
-
-## API Endpoints {.smaller}
-
-Check out their [list of API endpoints](https://www.census.gov/data/developers/data-sets.html).
-
-[`tidycensus`](https://cran.r-project.org/package=tidycensus) is a package that helps you work with specific APIs offered by the Census Bureau.
-
-## Documentation {.smaller}
-
-Great documentation in the [ACS API Handbook](https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_api_handbook_2020.pdf)
-
-![](media/api_documentation.png)
-
-## FIPS {.smaller}
-
-"FIPS" stands for "Federal Information Processing Standards" but often, when you talk to people, they'll apply the term to whatever their particular federal data is... so, e.g., instead of "Census tract identifier" they'll say "the FIPS". It's a term that therefore ends up having lots of meanings.
-
-There are FIPS codes for states, counties, tracts, and blocks, and when concatenated, they end up being a single geographic id. Tracts and blocks can and will change from census to census!
-
-## FIPS Example {.smaller}
-
-For example, the state code for Pennsylvania is 42, the county code for Philadelphia is 101, and the census tract within Philadelphia where the University City campus of the Children's Hospital of Philadelphia stands is 036901 (the last two digits can be thought of as 'after the decimal point', so this has a "human" name of Census Tract 369.01). Further, the block group is 4, and the full block number is 4002, so you might be using a "GEOID" of 421010369014002 (if the block is included), or just 42101036901 (if you have tract level data only).
-
-## Granularity of Data {.smaller}
-
-Census data is very very specific. If, for example, you're interested in income data for a given tract, you might find columns that include descriptions like:
-
--   INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Total households - Less than \$10,000
--   INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Total households - \$10,000 to \$14,999
--   INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Total households - \$15,000 to \$24,999
--   INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Total households - \$25,000 to \$34,999
--   ... and so on ..
-
-## Granularity of Data {.smaller}
-
-Or:
-
--   INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Families - Less than \$10,000
--   INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Families - \$10,000 to \$14,999
--   ... and so on ...
-
-## Granularity of Data {.smaller}
-
-Or:
-
--   INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - With Supplemental Security Income - Mean Supplemental Security Income (dollars)
--   INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - With cash public assistance income - Mean cash public assistance income (dollars)
--   ... and so on...
-
-## Granularity of Data {.smaller}
-
-Or:
-
--   INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Median earnings for workers (dollars)
--   INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Median earnings for male full-time, year-round workers (dollars)
--   INCOME AND BENEFITS (IN 2017 INFLATION-ADJUSTED DOLLARS) - Median earnings for female full-time, year-round workers (dollars)
-
-## Granularity of Data {.smaller}
-
-You will likely need to do a bit of honing your question: families only, or all households (say, a single person, or a group home)? Do you want to look at statistics across the board or specify race, sex, or hispanicity? What is considered income, and what benefits? Do you want to include SSI? Measure it separately? What about welfare?
-
-## Estimates and MOEs {.smaller}
-
-You'll also find, for any given measure, a few variables related to it:
-
--   Estimate -- used when a scalar count or value is needed, like median income or number of white women
--   Margin of error -- used to indicate the precision of the estimate
--   Percent -- used when a percent is needed, like percent of families below the poverty line
--   Percent Margin of Error -- used to indicate the precision of the percent estimate
-
-Note that all four columns are generally present although only two make sense for any given measure!
-
-## Sparsity {.smaller}
-
-Every area of the US belongs to a census tract, even if it's an area in which people don't normally live (like a park or lake or airport). That's why you might see census tracts with little to no data. Don't panic if you see that a few tracts have very sparse data -- they may be one of these special tracts.
-
-## Practical Section 4 {.smaller}
-
-Time to play with data! But first, check your email, then go to the materials for this course, the stuff you downloaded from the repository.
-
--   Find the email with your Census API key
--   Add that to a new text file (you can make a new text file in RStudio or any text editor)
--   Save it in the `/private` directory you created earlier, as `census_api_key.txt`
-
-## Practical Section 4 {.smaller}
-
-Now that you've stored your API key...
-
-Go to the materials for this course, the stuff you downloaded from the repository. Look inside `/scripts` and open `census_data.Rmd`.
-
-(Feeling fancy? It might be a good idea to start a Project using the top level directory as the location...)
-
-## Practical Section 4 {.smaller}
-
-You probably have to install some things. RStudio may have already alerted you to this. Alternatively, uncomment and run line 15 of `census_data.Rmd`. You can skip most of the verbiage in the next few sections, it's the stuff I've already explained.
-
-Scroll all the way down to the chunk titled "key_setting" around line 140, where we'll pick up your census key. You **did** save it, right? Then, run the blocks one at a time, pausing to note what each one does and how you might choose something different as an example. Experiment some! This will lead into our Break / Q&A time, so govern your time as you see fit.
-
-## Section 2: Public Data Portals {.smaller}
-
-In this section we'll delve a bit more into what APIs are and why to use them, and give you some tips for navigating public data portals.
-
-Not **all** public data of interest is located in well-organized portals -- you may need to scrape an HTML table from a webpage or download a fixed-width file from an FTP server, but today we're going to stick to these use cases.
-
-## Public Data Portal {.smaller}
-
-The easiest way to find public data that's relevant to you is to search for "Open Data" plus your search term, and look for sites that have "data" in the URL or name.
-
-For example, let's search for "open data gun violence new york city". A few results show up:
-
-![](media/gun_violence_new_york.png) \## Public Data Portal {.smaller}
-
-The first site has NYC gun violence data in the form of tables inside a pdf (not that helpful for us). The second site, which has "data" in the URL, is much more promising...
-
-![](media/gun_violence_new_york.png)
-
-## NYC Open Data {.smaller}
+## What is an API? {.smaller}
 
 ::: columns
 ::: {.column width="60%"}
-NYC Open Data is a particularly good open data resource. Still, it's not perfect! The [NYC Crime](https://data.cityofnewyork.us/Public-Safety/NYC-crime/qb7u-rbmr) dataset is a very small dataset of only 11 rows!
 
-But it comes from a [much larger dataset](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243), the misnamed "NYPD Complaint Data Current (Year to Date)" which actually has crime data from 2019 forward.
+***API*** stands for ***Application Programming Interface***. It's a way for people or computers to interact with software in a prescribed way. A common type of Web API is based on the REST architecture and are often referred to as "RESTful APIs".
+
+A RESTful API promotes a "resource-oriented" API where URLs (web addresses) map to objects or resources that you can then interact with (like .csvs of data). 
+
 :::
 
 ::: {.column width="40%"}
-![](media/nyc_open_data_nypd.png)
+![](media/nytimes_api.png)
 :::
 :::
 
-## NYC Open Data {.smaller}
+::: {.notes}
+Here is a screenshot from one of the APIs provided by the New York Times.  You can see here how the URL is used to describe what you might be looking for, like the bestsellers for a given date. 
+:::
 
-Let's take a peek at the API button:
 
-![](media/api_button.png)
+## Why Use an API? {.smaller}
 
-## Socrata API {.smaller}
+Why use APIs?  They provide a structured, consistent way to carry out a process so that it can be **automated** and **standardized**. An API provides consistency around a process.
 
-Because the Socrata Open Data API (SODA) is consistent across the many public data sources that employ it, we can learn some of the basic use cases once and be well-equipped to use the same methods in multiple places.
+::: {.notes}
+So, why not just Google the NYT bestsellers from a given date and copy and paste that data from a web page?  It seems simpler than learning an API.
 
-The Socrata Open Data API (SODA) uses URL query strings (also known as URL queries or URL parameters) to pass the data provider some details about what data you want.
+Imagine two different people doing the exact same data download task using a manual approach. They will each have a different process for doing the task and likely a different result as well.
 
-**Aside: Why is this API called "open"? Because it allows any user to download data without login credentials -- it's, well, open!**
+An API defines and requires a specific structure for input and provides a specific structure for the output.
+:::
+
+
+## APIs Mean Fresh Data! {.smaller}
+
+::: columns
+::: {.column width="60%"}
+While many data-centric applications allow you to download data by using a form submission or clicking on buttons that save data to your computer, that might not be the most useful way to work with data in an ongoing way.
+
+:::
+
+::: {.column width="40%"}
+![](media/pubmed_api.png)
+:::
+:::
+
+::: {.notes}
+Especially if your data might change regularly, with more data being added, it's probably smart to add a few lines to your code that get the latest data, instead of depending on a potentially stale CSV in a folder on your computer.  Some of you might already be doing this in REDCap, for example!
+:::
+
+## The Alternative... is Awful {.smaller}
+
+Instructions:
+
+-   Go to https://fake.site/data ...
+-   Log in using the username:mike and password:mypassword
+-   Make sure you've checked the following boxes in the data request page: ...
+-   Save the file with the following naming convention: ...
+-   Store the file in the sharefile folder within the directory called ...
+
+::: {.notes}
+Using an API makes it easier to make a reproducible script that with the push of a button runs and does everything from obtaining data to analyzing it and creating data visualizations, instead of relying on an error-prone, human-executed punch list of instructions with manual steps like the ones on this slide!  
+:::
 
 ## URL Queries {.smaller}
 
-Consider this URL: https://www.amazon.com/s?k=r+for+data+science&crid=1CZ68952YCOJU&sprefix=r+for+data+sci%2Caps%2C143&ref=nb_sb_ss_i\_1_14
+Consider this URL: 
+
+```
+https://www.amazon.com/s?k=r+for+data+science&crid=1CZ68952YCOJU&sprefix=r+for+data+sci%2Caps%2C143&ref=nb_sb_ss_i\_1_14
+```
 
 You may have seen long URLs like this one, which have question marks, equals signs, and ampersands. These long query strings generally give specific data -- in this case, I'm asking for a specific book title, which I left in lower case: "r for data science". Let's take a look at this specific query string:
 
-    ?k=r+for+data+science&crid=1CZ68952YCOJU&sprefix=r+for+data+sci%2Caps%2C143&ref=nb_sb_ss_i_1_14
+```
+?k=r+for+data+science&crid=1CZ68952YCOJU&sprefix=r+for+data+sci%2Caps%2C143&ref=nb_sb_ss_i_1_14
+```
 
 ## Query Strings {.smaller}
 
-    ?k=r+for+data+science&crid=1CZ68952YCOJU&sprefix=r+for+data+sci%2Caps%2C143&ref=nb_sb_ss_i_1_14
+```
+?k=r+for+data+science&crid=1CZ68952YCOJU&sprefix=r+for+data+sci%2Caps%2C143&ref=nb_sb_ss_i_1_14
+```
 
 These are the keys (variables, named data points) and values we see in the query string:
 
@@ -417,26 +201,154 @@ These are the keys (variables, named data points) and values we see in the query
 
 ## Query Strings {.smaller}
 
-    ?k=r+for+data+science&crid=1CZ68952YCOJU&sprefix=r+for+data+sci%2Caps%2C143&ref=nb_sb_ss_i_1_14
+```
+?k=r+for+data+science&crid=1CZ68952YCOJU&sprefix=r+for+data+sci%2Caps%2C143&ref=nb_sb_ss_i_1_14
+```
 
 You'll notice that a query string starts with a `?` and is followed by key-value pairs with the format "key=value". There are no spaces allowed, which is why URLs will use things like plus signs or `%20` to indicate spaces. Between key-value pairs, we add an ampersand (`&`), and can string together many key-value pairs in this way.
 
-It's important to become comfortable with query strings like the one above so that you can effectively construct query strings for your work with the Socrata API.
+::: {.notes}
+While some of the tools we'll use today do that query string construction for you, it's still important to know how URL-based API requests work.
+::: 
 
-## Socrata Tips and Tricks
+## Exercise {.smaller}
 
-The SODA API will, unless we state otherwise, only give us the first 1000 rows of data, to keep us from accidentally downloading millions of rows.
+Go to the materials for this course, the stuff you downloaded from the repository.  In `scripts`, open the `pubmed_api_example.Rmd` file.  Pubmed allows anonymous use of its API (no API key required), within certain limits.  
 
-SODA's "Simple Filter" functionality, which provides very coarse-grained control that allows you to control what you import based on column name.
+Can't / don't want to do this code right now?  Check out the rendered version at <https://rpubs.com/pm0kjp/pubmed_api_example>
 
-Read more about that here: https://dev.socrata.com/docs/filtering.html
+::: {.notes}
+We'll do an initial search (and feel free to  try your own!), then do some keyword combining and run a bunch of API calls, throttled by a half second delay between each one.
+:::
 
-## Section 3: Mapping With Leaflet
+# Section 2: Public Data Portals {.smaller}
+
+In this section we'll delve a bit more into API usage, and give you some tips for navigating public data portals (by **data portal** here I mean a well designed website whose purpose is to give access to downloadable data using easy methods).
+
+::: {.notes}
+Not **all** public data of interest is located in well-organized portals -- you may need to scrape an HTML table from a webpage or download a fixed-width file from an FTP server, but today we're going to stick to these use cases.
+:::
+
+## Public Data Portal {.smaller}
+
+The easiest way to find public data that's relevant to you is to search for "Open Data" plus your search term, and look for sites that have "data" in the URL or name.
+
+For example, let's search for "open data gun violence new york city". A few results show up:
+
+![](media/gun_violence_new_york.png) 
+
+## Public Data Portal {.smaller}
+
+The first site has NYC gun violence data in the form of tables inside a pdf (not that helpful for us). The second site, which has "data" in the URL, is much more promising...
+
+![](media/gun_violence_new_york.png)
+
+## NYC Open Data {.smaller}
+
+
+NYC Open Data is a particularly good open data resource. Still, it's not perfect! The [NYC Crime](https://data.cityofnewyork.us/Public-Safety/NYC-crime/qb7u-rbmr) dataset is a very small dataset of only 11 rows!  Hmmmm....
+
+![](media/nyc_crime_small_data.png)
+
+::: {.notes}
+A few things to notice here:  This is a *community* provided view of data that's based on a different product provided by NYPD.  There's also a ton of metadata here to help us understand more about the data at a glance.  Finally, even the best data portals will have data that's not useful, at least not to you!
+:::
+
+## NYC Open Data {.smaller}
+
+::: columns
+::: {.column width="60%"}
+That small view stated that it comes from a [much larger dataset](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243), the misnamed "NYPD Complaint Data Current (Year to Date)" which actually has crime data from 2019 forward.
+:::
+
+::: {.column width="40%"}
+![](media/nyc_open_data_nypd.png)
+:::
+:::
+
+::: {.notes}
+This is clearly a much larger dataset, and if I scroll down to preview it I can get a look at some of the rows.  This data looks as though it's up to date but the description and title are a bit misleading.  This is another thing you'll deal with when you're sourcing data -- incorrect or misleading metadata.  This happens less in high quality data portals like New York's, but as you can see it still does happen!
+:::
+
+## NYC Open Data {.smaller}
+
+Let's take a peek at the API button.  This data is hosted in a Socrata-powered data portal, and uses the Socrata Open Data API, or SODA. 
+
+![](media/api_button.png)
+
+
+::: {.notes}
+Socrata is a company that specializes in public data portals like New York's. Why is this API called "open"? Because it allows any user to download data without login credentials -- it's, well, open!
+
+In our next practical exercise we'll find interesting data available through the SODA API and I'll have you download data using the API endpoint.
+:::
+
+## Socrata API {.smaller}
+
+Because the Socrata Open Data API (SODA) is consistent across the many public data sources that employ it, we can learn some of the basic use cases once and be well-equipped to use the same methods in multiple places.
+
+The Socrata Open Data API (SODA) uses URL query strings (also known as URL queries or URL parameters) to pass the data portal the details about what data you want.  
+
+::: {.notes}
+We're going to start by using a Socrata data portal and then at the end of our workshop, if time permits, we'll work with non-Socrata data to get some instincts for how to work with arbitrary APIs.
+:::
+
+## Exercise {.smaller}
+
+Let's look at Socrata's list of data portals.  Find one that's interesting to you!
+
+Visit <https://dev.socrata.com/data/> and search for your region or area of interest.  Then, when you find a likely dataset, click the API button to see more information about your dataset.  Look at the columns -- for our purposes today, you want to see some sort of geography, like the names of counties, geo-ids, fips codes, census tract identifiers, etc.
+
+![](media/iowa_overview.png)
+
+::: {.notes}
+Here I searched for "child abuse" and I'm interested in this Iowa dataset, because it has geographic elements, in this case, the county the abuse occurred in.  I can click the green API button to get more detail.
+:::
+
+## Exercise {.smaller}
+
+You may be presented interesting tips about how to work with SODA,
+
+For example, here we read about SODA's "Simple Filter" functionality, which provides very coarse-grained control that allows you to control what you import based on column name.
+
+Check in the pink endpoint box in the upper right for the file types that are available.  When you click there, you want to see, ideally, csv and geojson as options.  
+
+![](media/iowa_details.png)
+
+::: {.notes}
+There are features that SODA offers, like filters, paging, and throttling, which are fairly common across many APIs from lots of different data providers, whether that's the NYT, NIH, or a government data portal.  Socrata also offers its own flavor of SQL, SoQL which is unique to them.
+:::
+
+
+## Exercise
+
+If you don't yet have a dataset you want to work with, please go to <https://data.cityofnewyork.us/Public-Safety/NYC-crime/qb7u-rbmr>, find the API button and give it a click.  
+
+If you have a dataset you want to work with, we'll use that API endpoint instead.  
+
+::: {.notes}
+There are interesting help files on the API window that pops up, such as API documentation.  It also gives you various file options, including JSON, CSV, and GeoJSON.  For now, we'll work with the CSV, but in a few minutes we can work with GeoJSON.
+:::
+
+## Quick Map and Break 
+
+Without explaining how things work, let's do a quick map of your data so you have an easy(-ish) win right away.  
+
+Open `scripts/simple_maps_from_socrata.Rmd`.  Follow the instructions and feel free to surge ahead while I work with anyone having issues.  This will lead into your break so do as little or as much as you want as far as riffing, trying new options, etc.
+
+Rendered version available at <https://rpubs.com/pm0kjp/simple_maps_from_socrata>
+
+# Section 3: Maps and Geospatial Data
 
 In this section, we're going to talk about several topics:
 
 -   Maps as a data visualization idiom
--   Choropleths
+-   Geospatial data formats and files
+-   Mapping with Leaflet
+
+::: {.notes}
+As an aside, mapping with Leaflet isn't the only way to make maps in R, but it's the way I'll use here, because you can use leaflet in both R and Python, and in online resources like webpages or to make static maps for paper publications.
+:::
 
 ## Map as Idiom: Example 1
 
@@ -465,7 +377,11 @@ What do you see in this reconstruction of a 12th century data visualization?
 -   GeoJSON (IETF Standard) https://tools.ietf.org/html/rfc7946 (usually one file)
 -   Shapefile (ESRI standard) https://www.esri.com/library/whitepapers/pdfs/shapefile.pdf (usually multiple files in a .zip)
 
-Along with many folks (see, e.g. http://switchfromshapefile.org/) , I believe that geoJSON is a better format than Shapefile, but this is mostly due to the fact that JSON itself is so well-understood and easy to work with, so it's a simpler jump for me. Your needs may be different!
+Along with many folks (see, e.g. http://switchfromshapefile.org/) , I believe that geoJSON is a better format than Shapefile (but...)
+
+::: {.notes}
+but this is mostly due to the fact that JSON itself is so well-understood and easy to work with, so it's a simpler jump for me. Your needs may be different!
+:::
 
 ## But Wait, There's More!
 
@@ -476,7 +392,236 @@ There are other geospatial data types with smaller market share:
 -   [SpatiaLite](http://switchfromshapefile.org/#spatialite)
 -   [OGC KML](http://switchfromshapefile.org/#kml)
 
-## Working With Map Files
+## What's inside?
 
-Let's just start working with some map files to see what they look like under the hood.\
-All of my files can be found at https://github.com/pm0kjp/mapping-geographic-data-in-r or https://rstudio.cloud/project/334226 (YMMV)
+Let's look inside Shapefiles and GeoJSON... we'll look inside the raw files and then we'll use  RGDAL (the R version of the Geographic Data Abstraction Library) to transform the files.
+
+## Exercise
+
+Please open `scripts/opening_map_files.Rmd`.  We'll go through this together!
+
+# Section 4: US Census Data
+
+![](media/census_website.gif)
+
+## Decennial Census {.smaller}
+
+The US Census Bureau is bound by the Constitution to do a **full** (not sampled) census of all people within the US every ten years. This determines the number of seats in the US House of Representatives and are used to draw district boundaries. This is the *Decennial Census*.
+
+::: {.notes}
+Where in the Constitution?  Article 1, Section 2.
+
+For those of you outside the USA, your country probably has a populations statistics department or public demography ministry that does the same kinds of things.  
+
+If you are into math and/or data privacy, I encourage you to go down the rabbit hole of "differential privacy" as it relates to the decennial census.  Although the US Census Bureau has to provide accurate statistics at the state level, it can and does blur data at lower levels of granularity, to preserve individual privacy.  This can be problematic for small towns that rely on census data to know how to apportion funds.
+:::
+
+## American Community Survey {.smaller}
+
+In addition to the full population census, the Census Bureau is also responsible for conducting the *American Community Survey* (ACS) which uses sampling and inferential statistics to make estimates of social factors that affect your patients and research subjects... neighborhood characteristics like:
+
+-   Education levels, demographic characteristics
+-   Poverty rates, mean and median income
+-   Computer usage, housing characteristics
+-   Crime, commuting, and much more!
+
+
+## Versions of the ACS {.smaller}
+
+Note that the ACS also has one and five year versions. Five year ACS data includes estimates for the entire country, while one year versions concentrate on population-dense areas and have smaller sample sizes.
+
+::: {.notes}
+This means that if you're doing analysis on, say, NYC, you can get very up-to-date (but less reliable) 1-year estimates, but if you're interested in studying Iowa, or getting NYC estimates with a smaller margin of error, you'd be better off with a somewhat less current but broader and more reliable 5 year ACS. That's what we'll use today -- five year ACS estimates.
+:::
+
+
+## Other Census Work {.smaller}
+
+There are additional censuses performed by the Census Bureau that we won't talk about, such as an *Economic Census* done every five years and the *Census of Governments* done every five years.
+
+## Geographies {.smaller}
+
+Census data is collected at and aggregated to various levels:
+
+-   The country as a whole
+-   States / territories
+-   Counties
+-   ZIP Code Tabulation Areas (approximations of ZIP Codes)
+-   Urban areas
+-   Census Tracts (1-8k people)
+-   Census Block Groups
+-   Census Blocks (600 - 3k people)
+-   and probably more I've forgotten about!
+
+::: {.notes}
+Think about what kind of geographies are useful to you in your clinical practice or research.  Maybe you want to show health disparities at the census tract level for your city, or show how different counties in your state are affected by opiod use disorder.  Later we'll use some census data in maps!
+:::
+
+## Census Website {.smaller}
+
+The website of the Census Bureau (<https://www.census.gov>) is a veritable treasure trove of information about what's available and how to use Census data.
+
+You can obtain data and download it in the Census Data browser at <https://data.census.gov/>. The tables you will find here are optimized for **human readability**, not always for processing via script.
+
+::: {.notes}
+But using these human-optimized tables can give you an idea of what kind of data is available, the short name / encoding for variables, and give you access to notes about your data.
+:::
+
+## Exercise {.smaller}
+
+Let's take a look at these two websites. Delve in to what's available. How would this data be useful for you in your clinical practice or research?
+
+-   <https://www.census.gov>
+-   <https://data.census.gov/>
+
+## API Overview {.smaller}
+
+This is what the [Census Bureau says](https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_api_handbook_2020_ch02.pdf) about API usage:
+
+> Any user may query small quantities of data with minimal restrictions (up to 50 variables in a single query, and up to 500 queries per IP address per day). However, more than 500 queries per IP address per day requires that you register for an API key.
+
+
+::: {.notes}
+Plan to work with Census Bureau data over and over again? It's worth the time to use APIs instead of downloading data from the website manually.
+:::
+
+## Getting an API Key {.smaller}
+
+From the [same source](https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_api_handbook_2020_ch02.pdf):
+
+> Once you have an API key, you can extract information from Census Bureau data sets using a variety of tools including JSON, R, Python, or even by typing a query string into the URL of a Web browser.
+
+## Exercise {.smaller}
+
+The Census Bureau offers **free** API credentials at <https://api.census.gov/data/key_signup.html>
+
+**Do that now.**
+
+**We'll wait.**
+
+No, really, do that now, that way you can work on the practical sections!
+
+## API Endpoints {.smaller}
+
+Check out their [list of API endpoints](https://www.census.gov/data/developers/data-sets.html).
+
+[`tidycensus`](https://cran.r-project.org/package=tidycensus) is a package that helps you work with specific APIs offered by the Census Bureau.
+
+## Documentation {.smaller}
+
+Great documentation in the [ACS API Handbook](https://www.census.gov/content/dam/Census/library/publications/2020/acs/acs_api_handbook_2020.pdf)
+
+![](media/api_documentation.png)
+
+## FIPS {.smaller}
+
+"FIPS" stands for "Federal Information Processing Standards".
+
+There are FIPS codes for states, counties, tracts, and blocks, and when concatenated, they end up being a single geographic id. Tracts and blocks can and will change from census to census!
+
+::: {.notes}
+Often, when you talk to people, they'll apply the term to whatever their particular federal data is... so, e.g., instead of "Census tract identifier" they'll say "the FIPS". It's a term that therefore ends up having lots of meanings.
+:::
+
+## FIPS Example {.smaller}
+
+For example, FIPS state code for Pennsylvania is 42, the county code for Philadelphia is 101, and the census tract within Philadelphia where the University City campus of the Children's Hospital of Philadelphia stands is 036901.
+
+The last two digits can be thought of as 'after the decimal point', so this has a "human" name of Census Tract 369.01. 
+
+The block group for the hospital is 4, and the full block number is 4002, so you might be using a "GEOID" of 421010369014002 (if the block is included), or just 42101036901 (if you have tract level data only).
+
+## Granularity of Data {.smaller}
+
+Census data is very very specific. If, for example, you're interested in income data for a given tract, you might find columns that include descriptions like:
+
+-   INCOME AND BENEFITS (IN 2020 INFLATION-ADJUSTED DOLLARS) - Total households - Less than \$10,000
+-   INCOME AND BENEFITS (IN 2020 INFLATION-ADJUSTED DOLLARS) - Total households - \$10,000 to \$14,999
+-   INCOME AND BENEFITS (IN 2020 INFLATION-ADJUSTED DOLLARS) - Total households - \$15,000 to \$24,999
+-   INCOME AND BENEFITS (IN 2020 INFLATION-ADJUSTED DOLLARS) - Total households - \$25,000 to \$34,999
+-   ... and so on ..
+
+## Granularity of Data {.smaller}
+
+Or:
+
+-   INCOME AND BENEFITS (IN 2020 INFLATION-ADJUSTED DOLLARS) - Families - Less than \$10,000
+-   INCOME AND BENEFITS (IN 2020 INFLATION-ADJUSTED DOLLARS) - Families - \$10,000 to \$14,999
+-   ... and so on ...
+
+## Granularity of Data {.smaller}
+
+Or:
+
+-   INCOME AND BENEFITS (IN 2020 INFLATION-ADJUSTED DOLLARS) - With Supplemental Security Income - Mean Supplemental Security Income (dollars)
+-   INCOME AND BENEFITS (IN 2020 INFLATION-ADJUSTED DOLLARS) - With cash public assistance income - Mean cash public assistance income (dollars)
+-   ... and so on...
+
+## Granularity of Data {.smaller}
+
+Or:
+
+-   INCOME AND BENEFITS (IN 2020 INFLATION-ADJUSTED DOLLARS) - Median earnings for workers (dollars)
+-   INCOME AND BENEFITS (IN 2020 INFLATION-ADJUSTED DOLLARS) - Median earnings for male full-time, year-round workers (dollars)
+-   INCOME AND BENEFITS (IN 2020 INFLATION-ADJUSTED DOLLARS) - Median earnings for female full-time, year-round workers (dollars)
+
+## Granularity of Data {.smaller}
+
+You will likely need to do a bit of honing your question: families only, or all households (say, a single person, or a group home)? Do you want to look at statistics across the board or specify race, sex, or hispanicity? What is considered income, and what benefits? Do you want to include SSI? Measure it separately? What about welfare?
+
+## Estimates and MOEs {.smaller}
+
+You'll also find, for any given measure, a few variables related to it:
+
+-   Estimate -- used when a scalar count or value is needed, like median income or number of white women
+-   Margin of error -- used to indicate the precision of the estimate
+-   Percent -- used when a percent is needed, like percent of families below the poverty line
+-   Percent Margin of Error -- used to indicate the precision of the percent estimate
+
+Note that all four columns are generally present although only two make sense for any given measure!
+
+## Sparsity {.smaller}
+
+Every area of the US belongs to a census tract, even if it's an area in which people don't normally live (like a park or lake or airport). That's why you might see census tracts with little to no data. 
+
+::: {.notes}
+Don't panic if you see that a few tracts have very sparse data -- they may be one of these special tracts.
+:::
+
+## Exercise {.smaller}
+
+Time to play with data! But first, check your email, then go to the materials for this course, the stuff you downloaded from the repository.
+
+-   Find the email with your Census API key
+-   Add that to a new text file (you can make a new text file in RStudio or any text editor)
+-   Save it in the `/private` directory you created earlier, as `census_api_key.txt`
+
+## Exercise {.smaller}
+
+Now that you've stored your API key...
+
+Go to the materials for this course, the stuff you downloaded from the repository. Open `/scripts/census_data.Rmd`.  Rendered at <https://rpubs.com/pm0kjp/census_data>.
+
+(Feeling fancy? It might be a good idea to start a Project using the top level directory as the location...)
+
+## Exercise {.smaller}
+
+You probably have to install some things. RStudio may have already alerted you to this. Alternatively, uncomment and run line 15 of `census_data.Rmd`. You can skip most of the verbiage in the next few sections, it's the stuff I've already explained.
+
+Don't want to / can't run the code right now but don't want to miss out?  Here's the knitted version: <https://rpubs.com/pm0kjp/census_data> 
+
+::: {.notes}
+Scroll all the way down to the chunk titled "key_setting" around line 140, where we'll pick up your census key. You **did** save it, right? Then, run the blocks one at a time, pausing to note what each one does and how you might choose something different as an example.  I'll be working on this with you but you may want to tune me out and do your own thing, which is fine.
+
+Experiment some! This will lead into our Break / Q&A time, so govern your time as you see fit. 
+:::
+
+# Section 5: Other Data Portals
+
+Only if time permits: consider <https://www.opendataphilly.org/> .  It's not a Socrata-powered portal.  However, it's easy enough to figure out what the endpoints are for downloading data if you click around enough.
+
+## Exercise
+
+In <https://www.opendataphilly.org/> or your non-Socrata data portal of choice, find a data endpoint you're interested in.  How can you figure out a download link that looks like an API call (the URL will refer to a specific resource, perhaps with a query string)?
+
+Try to download and work with this file in a new R Markdown file.
