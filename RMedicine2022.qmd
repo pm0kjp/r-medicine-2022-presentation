@@ -9,6 +9,17 @@ editor: visual
 
 # About This Session {.smaller}
 
+## What's the Point? {.smaller}
+
+These are the assumptions I am basing this workshop on:
+
+* Geospatial data is useful to clinicians and biomed researchers
+* Neighborhood data is useful to clinicians and biomed researchers
+* Maps are great ways to share findings with all kinds of stakeholders
+* You can do a geospatial project just in R 
+
+## Itinerary {.smaller}
+
 Please follow along at <https://rpubs.com/pm0kjp/r_medicine_2022>. I include links here you'll want to click!
 
 -   Section 1: APIs
