@@ -32,6 +32,8 @@ Please follow along at <https://rpubs.com/pm0kjp/r_medicine_2022>. I include lin
 -   Q&A / Next Steps
 
 ::: {.notes}
+"Suh-CRAH-tah", like "Hakuna Matata" or "eat a frittata".
+
 The Census section is strongly USA-centric, but the rest is globally applicable.  
 :::
 
@@ -85,11 +87,13 @@ What are APIs and why do they matter?  We'll be talking about the Census API, th
 
 ::: columns
 ::: {.column width="60%"}
-First, let's start by having you clone the materials for the workshop to your own computer.  When we start using APIs you'll want this!
+First, let's start by having you clone the materials for the workshop to your own computer.  When we start using APIs you'll want this!  
 
 -   Go to <https://github.com/pm0kjp/r-medicine-2022/> and click on the green "Code" button to either:
 -   Clone the repository (if you already use git, you know how this works) or
 -   Download the zipped contents (if you're not a git user)
+
+Alternatively, if you have an RStudio.cloud account, go to https://rstudio.cloud/content/4381387 and make a copy of the project.
 :::
 
 ::: {.column width="40%"}
@@ -409,7 +413,7 @@ Let's look inside Shapefiles and GeoJSON... we'll look inside the raw files and 
 
 ## Exercise
 
-Please open `scripts/opening_map_files.Rmd`.  We'll go through this together!
+Please open `scripts/opening_map_files.Rmd`.  We'll go through this together!  As per usual, it's also available on rpubs: <https://rpubs.com/pm0kjp/opening_map_files>
 
 # Section 4: US Census Data
 
